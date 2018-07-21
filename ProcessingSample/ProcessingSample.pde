@@ -26,6 +26,7 @@ void draw() {
   switch(status) {
   case 0:
     background(30, 40, 255);
+    
     selectNum=-1;
     for (int i=0; i<serialString.length; i++) {
       if (overRect(50, 95+50*i, 500, 20)) {
@@ -44,8 +45,8 @@ void draw() {
       text(serialString[i], width/2, 100+50*i);
     }
 
-    fill(0, 200, 110);
-    text("Click to Select", width/2, 550);
+    //fill(0, 200, 110);
+    //text("Select micro:bit", width/2, 550);
     break;
 
   case 1:
@@ -58,8 +59,6 @@ void draw() {
       rect((width/maxSound)*i, height*bright[i], (width/maxSound), height*bright[i]);
     }
 
-    fill(0, 200, 110);
-    text(selectNum, width/2, 550);
     break;
   }
 }
@@ -68,8 +67,8 @@ void mousePressed() {
   if (status==0) {
     status=1;
     serialOpen();
-  } else if (status==1) {
-    status=0;
+  //} else if (status==1) {
+  //  status=0;
   }
 }
 
