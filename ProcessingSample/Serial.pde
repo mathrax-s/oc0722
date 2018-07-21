@@ -4,21 +4,23 @@ import processing.serial.*;
 Serial myPort;
 
 //USB-DEVICE
-String portName = "COM4";
+String portName = "usb";
 int portNumber;
 
 
 void serialOpen() {
-  findSerialPort(); 
-  myPort = new Serial(this, Serial.list()[portNumber], 115200); 
-  myPort.setDTR(true);
-  delay(1000);
-  myPort.clear();
+  //findSerialPort(); 
+  if (selectNum>=0) {
+    myPort = new Serial(this, Serial.list()[selectNum], 115200); 
+    myPort.setDTR(true);
+    delay(1000);
+    myPort.clear();
+  }
 }
 
+String[] serialString;  
+int serialCount = 0;
 void findSerialPort() {
-  String[] serialString;  
-  int serialCount = 0;
   boolean firstContact = false; 
   String serialCheck;  
   int serialIndex;  
