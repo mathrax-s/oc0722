@@ -4,7 +4,7 @@ import processing.serial.*;
 Serial myPort;
 
 //USB-DEVICE
-String portName = "COM";
+String portName = "COM4";
 int portNumber;
 
 

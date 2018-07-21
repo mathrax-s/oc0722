@@ -8,8 +8,8 @@ int[] keys = {'a', 's', 'd'};
 int[] notes ={2, 4, 7};
 
 void setup() {
-  //size(600, 600);
-  fullScreen();
+  size(600, 600);
+  //fullScreen();
   serialOpen();
   oscOpen();
 
