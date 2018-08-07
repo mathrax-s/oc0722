@@ -44,22 +44,38 @@ void findSerialPort() {
 
 
 void serialEvent (Serial p) {
+  String stringData=myPort.readStringUntil(10);
+  if (stringData!=null) {
+    stringData=trim(stringData);
+    int microbitData[]=int(split(stringData, ','));
 
-  if (myPort.available()>0) {
-    int inByte = myPort.read();
+    if (microbitData.length>=4) {
 
-    //println(inByte);
-    if (inByte=='0') {
-      bright[0] = 1.0;
-      sendOscSonicPi(notes[0]+72);
+      bright[0]=microbitData[0];
+      bright[1]=microbitData[1];
+      bright[2]=microbitData[2];
+      bright[3]=microbitData[3];
+      bright[4]=microbitData[4];
+
+      sendOscPd(microbitData[0], microbitData[1], microbitData[2], microbitData[3], microbitData[4]);
+
+      //println(bright[0] + "\t"+bright[1]+ "\t"+bright[2]);
     }
-    if (inByte=='1') {
-      bright[1] = 1.0;
-      sendOscSonicPi(notes[1]+72);
-    }
-    if (inByte=='2') {
-      bright[2] = 1.0;
-      sendOscSonicPi(notes[2]+72);
-    }
-  }
+  }  
+  //if (myPort.available()>0) {
+  //  int inByte = myPort.read();
+  //  println(inByte);
+  //  if (inByte=='0') {
+  //    bright[0] = 1.0;
+  //    sendOscSonicPi(notes[0]+72);
+  //  }
+  //  if (inByte=='1') {
+  //    bright[1] = 1.0;
+  //    sendOscSonicPi(notes[1]+72);
+  //  }
+  //  if (inByte=='2') {
+  //    bright[2] = 1.0;
+  //    sendOscSonicPi(notes[2]+72);
+  //  }
+  //}
 }

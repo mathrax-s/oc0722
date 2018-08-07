@@ -1,16 +1,18 @@
 // Visual Synth Demo
 // 2018.7.22
 
-int maxSound = 3;
+int maxSound = 5;
 
-float[] bright = new float[maxSound];
-int[] keys = {'a', 's', 'd'};
-int[] notes ={2, 4, 7};
+int[] bright = new int[maxSound];
+int[] keys = {'a', 's', 'd', 'f', 'g'};
+int[] notes ={2, 4, 7, 9, 11};
 int status = 0;
 int selectNum;
+float x;
+float[] lasty = new float[maxSound];
 
 void setup() {
-  size(600, 600);
+  size(800, 800);
   //fullScreen();
   findSerialPort();
   oscOpen();
@@ -25,11 +27,11 @@ void setup() {
 void draw() {
   switch(status) {
   case 0:
-    background(30, 40, 255);
-    
+    background(0);
+
     selectNum=-1;
     for (int i=0; i<serialString.length; i++) {
-      if (overRect(50, 95+50*i, 500, 20)) {
+      if (overRect(50, 95+50*i, width-100, 20)) {
         stroke(0, 255, 255);
         fill(0, 100, 255);
         selectNum=i;
@@ -37,7 +39,7 @@ void draw() {
         stroke(0, 100, 255);
         noFill();
       }
-      rect(50, 95+50*i, 500, 20);
+      rect(50, 95+50*i, width-100, 20);
 
       fill(100, 100, 100);
       textAlign(CENTER, CENTER);
@@ -50,13 +52,23 @@ void draw() {
     break;
 
   case 1:
-    background(30, 40, 255);
-
+    fill(bright[1]*30, 250, 100, 20);
+    noStroke();
+    rect(0, 0, width, height);
+    x+=3;
+    if (x>width) {
+      x=0;
+    }
     for (int i=0; i<maxSound; i++) {
-      bright[i]*=0.9;
-      noStroke();
+      stroke(i*50, 150, 255, 255);
+      strokeWeight(2);
       fill(i*50, 150, 255, 255);
-      rect((width/maxSound)*i, height*bright[i], (width/maxSound), height*bright[i]);
+      ellipse(x, map(bright[i], 0, 1023, height, 0),10,10);
+      line(x, lasty[i], x, map(bright[i], 0, 1023, height, 0));
+      lasty[i] = map(bright[i], 0, 1023, height, 0);
+      //bright[i]*=0.9;
+      //fill(i*50, 150, 255, 255);
+      //rect((width/maxSound)*i, height*bright[i], (width/maxSound), height*bright[i]);
     }
 
     break;
@@ -67,20 +79,21 @@ void mousePressed() {
   if (status==0) {
     status=1;
     serialOpen();
-  //} else if (status==1) {
-  //  status=0;
+    background(0);
+    //} else if (status==1) {
+    //  status=0;
   }
 }
 
-//Key Simulation
-void keyPressed() {
-  for (int i=0; i<maxSound; i++) {
-    if (key == keys[i]) {
-      bright[i] = 1.0;
-      sendOscSonicPi(notes[i]+72);
-    }
-  }
-}
+////Key Simulation
+//void keyPressed() {
+//  for (int i=0; i<maxSound; i++) {
+//    if (key == keys[i]) {
+//      bright[i] = 1.0;
+//      sendOscSonicPi(notes[i]+72);
+//    }
+//  }
+//}
 
 boolean overRect(int x, int y, int width, int height) {
   if (mouseX >= x && mouseX <= x+width && 
